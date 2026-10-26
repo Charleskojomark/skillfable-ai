@@ -33,3 +33,5 @@ stitch_skillfable_ai_learning_platform/
 .env
 .env.local
 .env.*.local
+
+.vercel

@@ -40,7 +40,7 @@ export const StoryPlayerView: React.FC<StoryPlayerViewProps> = ({
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-20 md:pt-24 pb-24 flex flex-col gap-6">
+    <div className="max-w-4xl mx-auto px-3.5 sm:px-6 pt-18 sm:pt-20 md:pt-24 pb-28 md:pb-24 flex flex-col gap-6">
       
       {/* Top Episode Selector Tabs */}
       <div className="flex items-center justify-between gap-2 overflow-x-auto pb-2 border-b border-surface-container-high/60">

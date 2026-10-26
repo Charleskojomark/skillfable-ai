@@ -19,16 +19,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const isEp1Completed = user.completedEpisodeIds.includes('ep-01');
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 md:pt-24 pb-20 flex flex-col gap-8">
+    <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-18 sm:pt-20 md:pt-24 pb-28 md:pb-16 flex flex-col gap-6 sm:gap-8">
       
       {/* Dossier Identity Header */}
-      <div className="relative overflow-hidden rounded-2xl bg-surface-container border border-outline-variant/30 p-6 md:p-8 shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-surface-container border border-outline-variant/30 p-5 sm:p-6 md:p-8 shadow-xl">
         <div className="absolute -top-16 -right-16 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-secondary/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5 sm:gap-6">
           <div className="flex flex-col gap-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container/20 border border-primary/30 text-primary text-xs font-mono tracking-wider uppercase font-semibold w-fit">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-full bg-primary-container/20 border border-primary/30 text-primary text-[10px] sm:text-xs font-mono tracking-wider uppercase font-semibold w-fit">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
               Terminal Connected • Secure Relay Node
             </div>

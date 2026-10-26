@@ -14,7 +14,7 @@ export const ProgressPortfolioView: React.FC<ProgressPortfolioViewProps> = ({
   onNavigateToTab
 }) => {
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-20 md:pt-24 pb-24 flex flex-col gap-8">
+    <div className="max-w-6xl mx-auto px-3.5 sm:px-6 pt-18 sm:pt-20 md:pt-24 pb-28 md:pb-24 flex flex-col gap-6 sm:gap-8">
       
       {/* Portfolio Header Dossier */}
       <div className="p-6 md:p-8 rounded-2xl bg-surface-container border border-outline-variant/30 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">

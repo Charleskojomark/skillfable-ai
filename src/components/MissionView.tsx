@@ -122,7 +122,7 @@ export const MissionView: React.FC<MissionViewProps> = ({
   const isMissionCompleted = user.completedMissionIds.includes(mission.id);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-20 md:pt-24 pb-24 flex flex-col gap-6">
+    <div className="max-w-6xl mx-auto px-3.5 sm:px-6 pt-18 sm:pt-20 md:pt-24 pb-28 md:pb-24 flex flex-col gap-6">
       
       {/* Mission Dossier Header */}
       <div className="p-6 rounded-2xl bg-surface-container border border-outline-variant/40 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
