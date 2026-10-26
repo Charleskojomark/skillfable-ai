@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserProfile } from './types';
 import { Navbar } from './components/Navbar';
 import { DashboardView } from './components/DashboardView';
@@ -9,7 +9,7 @@ import { ProfileModal } from './components/ProfileModal';
 
 const DEFAULT_USER: UserProfile = {
   name: 'Damilola Adeyemi',
-  title: 'AI Engineering Lead Fellow',
+  title: 'AI Engineering Fellow',
   cohort: 'Lagos Cohort 04',
   level: 3,
   xp: 1420,
@@ -22,8 +22,8 @@ const DEFAULT_USER: UserProfile = {
     {
       id: 'b-welcome',
       title: 'Relay Studio Fellowship Induction',
-      description: 'Admitted into Season 1: The Intelligence Project innovation cohort.',
-      icon: 'military_tech',
+      description: 'Accepted into Season 1: The Intelligence Project learning cohort.',
+      icon: 'school',
       earnedDate: 'Oct 24, 2026'
     }
   ],
@@ -31,7 +31,7 @@ const DEFAULT_USER: UserProfile = {
     {
       id: 'art-welcome',
       title: 'Relay Studio Innovation Charter',
-      type: 'Fellowship Charter',
+      type: 'Fellowship Agreement',
       summary: 'Commitment to African-centered, trustworthy, and contextually grounded AI solution design.',
       verifiedDate: 'Oct 24, 2026',
       badgeCode: 'RELAY-FELLOW-01'
@@ -44,12 +44,6 @@ export const App: React.FC = () => {
   const [currentEpisodeId, setCurrentEpisodeId] = useState<string>('ep-01');
   const [activeMissionId, setActiveMissionId] = useState<string>('m1-audit');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-
-  // Audio Context for subtle ambient tech sound
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const oscillatorRef = useRef<OscillatorNode | null>(null);
-  const gainNodeRef = useRef<GainNode | null>(null);
 
   // Load user from localStorage
   const [user, setUser] = useState<UserProfile>(() => {
@@ -70,43 +64,6 @@ export const App: React.FC = () => {
       // ignore
     }
   }, [user]);
-
-  // Audio stream simulator
-  const toggleAudio = () => {
-    if (isAudioPlaying) {
-      if (oscillatorRef.current) {
-        oscillatorRef.current.stop();
-        oscillatorRef.current.disconnect();
-        oscillatorRef.current = null;
-      }
-      setIsAudioPlaying(false);
-    } else {
-      try {
-        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-        const ctx = new AudioCtx();
-        audioContextRef.current = ctx;
-
-        // Ambient low frequency drone
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(110, ctx.currentTime); // Low A hum
-        gain.gain.setValueAtTime(0.04, ctx.currentTime); // very subtle
-
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-
-        oscillatorRef.current = osc;
-        gainNodeRef.current = gain;
-        setIsAudioPlaying(true);
-      } catch (err) {
-        console.warn('AudioContext not supported or blocked by browser', err);
-        setIsAudioPlaying(false);
-      }
-    }
-  };
 
   const handleRecordChoice = (beatId: string, choiceId: string, xpReward: number) => {
     setUser((prev) => {
@@ -134,19 +91,19 @@ export const App: React.FC = () => {
 
       const newBadge = {
         id: `badge-${missionId}`,
-        title: 'Verified Handover Architect',
+        title: 'Verified Handover Specialist',
         description: 'Audited file integrity and quarantined malicious binaries in live client review.',
-        icon: 'verified_user',
+        icon: 'verified',
         earnedDate: 'Today'
       };
 
       const newArtifact = {
         id: `art-${missionId}`,
-        title: 'Afara Health Verified Handover Pack (Audited)',
+        title: 'Afara Health Verified Handover Pack',
         type: 'Audit Dossier',
         summary: 'Certified baseline intake dataset, restricted cloud permissions, and threat quarantine record.',
         verifiedDate: 'Today',
-        badgeCode: 'AUDIT-0843-CERT'
+        badgeCode: 'AUDIT-0843'
       };
 
       return {
@@ -173,8 +130,6 @@ export const App: React.FC = () => {
         onSelectTab={setCurrentTab}
         user={user}
         onOpenProfile={() => setIsProfileOpen(true)}
-        isAudioPlaying={isAudioPlaying}
-        onToggleAudio={toggleAudio}
       />
 
       {/* Main Viewport Router */}
@@ -204,8 +159,6 @@ export const App: React.FC = () => {
               setActiveMissionId(mId);
               setCurrentTab('mission');
             }}
-            isAudioPlaying={isAudioPlaying}
-            onToggleAudio={toggleAudio}
           />
         )}
 
@@ -237,16 +190,15 @@ export const App: React.FC = () => {
       />
 
       {/* Global App Footer */}
-      <footer className="border-t border-surface-container-high/60 bg-surface-container-lowest/80 py-6 px-4 text-center text-xs text-on-surface-variant font-mono mb-16 md:mb-0">
+      <footer className="border-t border-surface-container-high/60 bg-surface-container-lowest/80 py-6 px-4 text-center text-xs text-on-surface-variant font-sans mb-16 md:mb-0">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-primary"></span>
-            <span className="font-sans font-bold text-on-surface">SkillFable AI</span>
+            <span className="font-serif font-bold text-on-surface">SkillFable AI</span>
             <span>— The Intelligence Project</span>
           </div>
 
           <div>
-            Built with Google Stitch & Antigravity • Nigerian & African AI Innovation Initiative
+            Learn skills by living the story. Designed for learners, builders, and entrepreneurs across Africa.
           </div>
         </div>
       </footer>

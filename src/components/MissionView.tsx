@@ -18,7 +18,6 @@ export const MissionView: React.FC<MissionViewProps> = ({
   onReturnToStory,
   onNavigateToTab
 }) => {
-  // Find current mission in Module 1
   const mission = MODULE_1.episodes.flatMap((e) => e.mission).find((m) => m.id === activeMissionId) || MODULE_1.episodes[0].mission;
   
   const [filesState, setFilesState] = useState<VirtualFile[]>(mission.files);
@@ -64,7 +63,7 @@ export const MissionView: React.FC<MissionViewProps> = ({
   };
 
   const handleRunAudit = () => {
-    setAuditResult({ status: 'running', message: 'Executing Relay Studio Cloud Directory Integrity Scan...', details: [] });
+    setAuditResult({ status: 'running', message: 'Verifying files and permissions...', details: [] });
 
     setTimeout(() => {
       const threatFile = filesState.find((f) => f.threatLevel === 'malicious');
@@ -75,19 +74,19 @@ export const MissionView: React.FC<MissionViewProps> = ({
 
       if (isThreatQuarantined && isCorrectHandover) {
         confetti({
-          particleCount: 80,
-          spread: 70,
+          particleCount: 60,
+          spread: 60,
           origin: { y: 0.6 }
         });
 
         setAuditResult({
           status: 'success',
-          message: 'AUDIT CERTIFIED: Workspace Clean & Client Handover Verified!',
+          message: 'Verification Passed: Handover Pack Prepared Successfully',
           details: [
-            '✓ Untrusted executable (emergency_patch.exe) quarantined safely.',
-            '✓ Verified baseline CSV dataset confirmed against Lagos State clinic registry.',
-            '✓ Access controls locked to "Restricted View" for Afara Health partners.',
-            '✓ +350 XP awarded to Fellow Profile.'
+            '✓ Untrusted binary (emergency_patch.exe) quarantined.',
+            '✓ Verified baseline dataset designated for client handover.',
+            '✓ Access controls confirmed as "Restricted View" for Afara Health partners.',
+            '✓ +350 pts awarded to your Fellow record.'
           ]
         });
 
@@ -95,48 +94,48 @@ export const MissionView: React.FC<MissionViewProps> = ({
       } else {
         const failurePoints: string[] = [];
         if (!isThreatQuarantined) {
-          failurePoints.push('SECURITY ALERT: The executable binary emergency_patch.exe is not in Quarantine!');
+          failurePoints.push('Security Issue: emergency_patch.exe is not in Quarantine.');
         }
         if (!handoverCandidate) {
-          failurePoints.push('DATA INTEGRITY: No verified handover file was designated for the client presentation.');
+          failurePoints.push('Data Missing: No verified handover file was selected for the client meeting.');
         } else if (handoverCandidate.extension !== 'CSV') {
-          failurePoints.push(`DATA INTEGRITY: ${handoverCandidate.name} has unverified formulas or outdated timestamps. Choose the CSV verified this morning.`);
+          failurePoints.push(`File Choice: ${handoverCandidate.name} has calculation errors or outdated versions. Choose the verified CSV.`);
         } else if (handoverCandidate.permission !== 'Restricted View') {
-          failurePoints.push('PERMISSIONS: The handover file must be set to "Restricted View" to prevent external tampering.');
+          failurePoints.push('Permissions: Set the handover file to "Restricted View" to protect client data.');
         }
 
         setAuditResult({
           status: 'failed',
-          message: 'AUDIT FAILED: Operational Risks Detected in Handover Directory.',
+          message: 'Verification Review Incomplete',
           details: failurePoints
         });
       }
-    }, 800);
+    }, 600);
   };
 
   const isMissionCompleted = user.completedMissionIds.includes(mission.id);
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-3.5 sm:px-6 pt-20 sm:pt-24 md:pt-28 pb-28 md:pb-24 flex flex-col gap-5 sm:gap-6 overflow-x-hidden">
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 pt-20 sm:pt-24 md:pt-28 pb-28 md:pb-24 flex flex-col gap-6 overflow-x-hidden">
       
-      {/* Mission Dossier Header */}
-      <div className="p-4 sm:p-6 rounded-2xl bg-surface-container border border-outline-variant/40 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4 w-full">
+      {/* Mission Header */}
+      <div className="p-5 sm:p-6 rounded-2xl bg-surface-container border border-outline-variant/30 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 w-full">
         <div className="flex flex-col gap-2 min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="px-2.5 py-0.5 rounded bg-secondary-container/20 border border-secondary/30 text-secondary text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase">
-              {mission.moduleCode} MISSION WORKSPACE
+            <span className="px-2.5 py-0.5 rounded bg-surface-container-high border border-outline-variant/30 text-secondary text-xs font-mono font-medium uppercase">
+              {mission.moduleCode} Assignment
             </span>
             {isMissionCompleted && (
-              <span className="px-2 py-0.5 rounded bg-secondary text-on-secondary text-[9px] sm:text-[10px] font-mono font-bold uppercase">
-                Audited & Completed
+              <span className="px-2 py-0.5 rounded bg-secondary/15 text-secondary text-xs font-medium uppercase">
+                Completed
               </span>
             )}
-            <span className="text-[11px] sm:text-xs font-mono text-on-surface-variant">
+            <span className="text-xs text-on-surface-variant font-mono">
               Est. {mission.estimatedMinutes} Mins
             </span>
           </div>
 
-          <h1 className="font-serif text-xl sm:text-2xl md:text-3xl text-on-surface font-semibold break-words">
+          <h1 className="font-serif text-2xl sm:text-3xl text-on-surface font-semibold break-words">
             {mission.title}
           </h1>
 
@@ -147,26 +146,26 @@ export const MissionView: React.FC<MissionViewProps> = ({
 
         <button
           onClick={onReturnToStory}
-          className="flex items-center justify-center gap-1.5 sm:gap-2 px-4 py-2.5 rounded-xl bg-surface-container-high border border-outline-variant/30 text-on-surface text-xs font-semibold hover:border-primary transition-all shrink-0 self-start md:self-center"
+          className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-surface-container-high border border-outline-variant/30 text-on-surface text-xs font-medium hover:border-outline transition-all shrink-0 self-start md:self-center"
         >
           <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-          <span>Back to Story</span>
+          <span>Return to Story</span>
         </button>
       </div>
 
-      {/* Main Terminal Workspace Layout */}
+      {/* Main Workspace Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 w-full">
         
-        {/* Left Column: Virtual File Browser (5 cols) */}
+        {/* Left Column: Virtual File Browser */}
         <div className="lg:col-span-5 flex flex-col gap-4 w-full min-w-0">
-          <div className="p-3.5 sm:p-4 rounded-xl bg-surface-container border border-outline-variant/30 shadow-lg flex flex-col gap-3 w-full">
+          <div className="p-4 rounded-xl bg-surface-container border border-outline-variant/30 shadow-sm flex flex-col gap-3 w-full">
             <div className="flex items-center justify-between gap-2">
-              <span className="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-tertiary font-bold flex items-center gap-1.5 truncate">
-                <span className="material-symbols-outlined text-[16px] shrink-0">folder_open</span>
-                <span className="truncate">/afara_handover_0843/</span>
+              <span className="text-xs font-mono text-on-surface font-semibold flex items-center gap-1.5 truncate">
+                <span className="material-symbols-outlined text-[16px] text-primary shrink-0">folder</span>
+                <span className="truncate">Afara Handover Folder</span>
               </span>
-              <span className="text-[10px] sm:text-[11px] font-mono text-on-surface-variant shrink-0">
-                {filesState.length} Objects
+              <span className="text-xs font-mono text-on-surface-variant shrink-0">
+                {filesState.length} files
               </span>
             </div>
 
@@ -182,25 +181,25 @@ export const MissionView: React.FC<MissionViewProps> = ({
                     onClick={() => setSelectedFileId(file.id)}
                     className={`p-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-2.5 w-full min-w-0 ${
                       isSelected
-                        ? 'bg-surface-container-high border-primary ring-1 ring-primary/40 shadow-md'
+                        ? 'bg-surface-container-high border-primary/70 shadow-sm'
                         : isQuarantined
-                        ? 'bg-error-container/10 border-error/40 hover:border-error'
-                        : 'bg-surface-container-lowest border-outline-variant/20 hover:border-outline-variant'
+                        ? 'bg-error-container/10 border-error/30'
+                        : 'bg-surface-container-lowest border-outline-variant/20 hover:border-outline-variant/40'
                     }`}
                   >
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
                       <span className={`w-8 h-8 rounded-lg flex items-center justify-center font-mono text-[10px] font-bold shrink-0 ${
                         file.extension === 'EXE'
-                          ? 'bg-error-container text-on-error'
+                          ? 'bg-error-container/40 text-error'
                           : file.extension === 'CSV'
-                          ? 'bg-secondary-container text-on-secondary-container'
-                          : 'bg-surface-container-highest text-primary'
+                          ? 'bg-secondary-container/40 text-secondary'
+                          : 'bg-surface-container-highest text-on-surface'
                       }`}>
                         {file.extension}
                       </span>
 
                       <div className="flex flex-col min-w-0 flex-1">
-                        <span className={`text-xs font-semibold truncate block ${
+                        <span className={`text-xs font-medium truncate block ${
                           isSelected ? 'text-primary' : isQuarantined ? 'text-error line-through' : 'text-on-surface'
                         }`}>
                           {file.name}
@@ -213,13 +212,13 @@ export const MissionView: React.FC<MissionViewProps> = ({
 
                     <div className="flex items-center gap-1 shrink-0">
                       {isQuarantined && (
-                        <span className="px-1.5 py-0.5 rounded bg-error/20 text-error font-mono text-[9px] uppercase font-bold">
-                          ISOLATED
+                        <span className="px-1.5 py-0.5 rounded bg-error/15 text-error font-mono text-[9px] uppercase font-semibold">
+                          Quarantined
                         </span>
                       )}
                       {file.isVerifiedHandover && (
-                        <span className="px-1.5 py-0.5 rounded bg-secondary/20 text-secondary font-mono text-[9px] uppercase font-bold">
-                          HANDOVER
+                        <span className="px-1.5 py-0.5 rounded bg-secondary/15 text-secondary font-mono text-[9px] uppercase font-semibold">
+                          Selected
                         </span>
                       )}
                     </div>
@@ -229,86 +228,86 @@ export const MissionView: React.FC<MissionViewProps> = ({
             </div>
           </div>
 
-          {/* Progressive Hints Accordion */}
-          <div className="p-3.5 sm:p-4 rounded-xl bg-surface-container border border-outline-variant/30 flex flex-col gap-2 w-full">
+          {/* Practical Hints */}
+          <div className="p-4 rounded-xl bg-surface-container border border-outline-variant/30 flex flex-col gap-2 w-full">
             <div className="flex items-center justify-between gap-2">
-              <span className="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-on-surface-variant font-bold flex items-center gap-1.5 truncate">
-                <span className="material-symbols-outlined text-[16px] text-tertiary shrink-0">lightbulb</span>
-                <span className="truncate">Field Guidance</span>
+              <span className="text-xs font-sans text-on-surface font-semibold flex items-center gap-1.5 truncate">
+                <span className="material-symbols-outlined text-[16px] text-tertiary shrink-0">tips_and_updates</span>
+                <span className="truncate">Guidelines & Hints</span>
               </span>
               <button
                 onClick={() => setHintIndex((prev) => (prev < mission.hints.length - 1 ? prev + 1 : 0))}
-                className="text-[11px] font-mono text-secondary hover:text-primary transition-colors shrink-0"
+                className="text-xs text-secondary hover:text-primary transition-colors shrink-0"
               >
-                {hintIndex === -1 ? 'Reveal Clue' : `Next (${hintIndex + 1}/${mission.hints.length})`}
+                {hintIndex === -1 ? 'Show Hint' : `Hint (${hintIndex + 1}/${mission.hints.length})`}
               </button>
             </div>
 
             {hintIndex >= 0 && (
-              <div className="p-3 rounded-lg bg-surface-container-high/80 border border-tertiary/30 text-xs text-on-surface leading-relaxed animate-fadeIn break-words">
-                <strong>Clue #{hintIndex + 1}:</strong> {mission.hints[hintIndex]}
+              <div className="p-3 rounded-lg bg-surface-container-high border border-outline-variant/30 text-xs text-on-surface-variant leading-relaxed break-words">
+                <strong className="text-on-surface font-medium">Note #{hintIndex + 1}:</strong> {mission.hints[hintIndex]}
               </div>
             )}
           </div>
         </div>
 
-        {/* Right Column: File Inspector & Security Action Console (7 cols) */}
+        {/* Right Column: File Details & Handover Verification */}
         <div className="lg:col-span-7 flex flex-col gap-4 w-full min-w-0">
           
-          {/* File Forensics Inspector Panel */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-surface-container border border-outline-variant/40 shadow-xl flex flex-col gap-4 w-full">
+          {/* File Details Panel */}
+          <div className="p-5 rounded-2xl bg-surface-container border border-outline-variant/30 shadow-sm flex flex-col gap-4 w-full">
             <div className="flex items-center justify-between pb-3 border-b border-surface-container-highest gap-2">
               <div className="flex items-center gap-2 min-w-0 flex-1">
-                <span className="material-symbols-outlined text-primary text-[18px] shrink-0">terminal</span>
-                <span className="font-mono text-xs uppercase tracking-wider text-primary font-bold truncate">
-                  Forensics // {selectedFile.name}
+                <span className="material-symbols-outlined text-primary text-[18px] shrink-0">info</span>
+                <span className="text-xs font-semibold text-on-surface truncate">
+                  File Details: {selectedFile.name}
                 </span>
               </div>
-              <span className={`px-2 py-0.5 rounded-full font-mono text-[9px] sm:text-[10px] font-bold uppercase shrink-0 ${
+              <span className={`px-2 py-0.5 rounded font-mono text-[10px] font-medium uppercase shrink-0 ${
                 selectedFile.threatLevel === 'malicious'
-                  ? 'bg-error-container text-on-error'
-                  : 'bg-secondary-container/20 text-secondary'
+                  ? 'bg-error/15 text-error'
+                  : 'bg-secondary/15 text-secondary'
               }`}>
-                {selectedFile.threatLevel === 'malicious' ? 'Untrusted Threat' : 'Safe Data Object'}
+                {selectedFile.threatLevel === 'malicious' ? 'Security Risk' : 'Standard File'}
               </span>
             </div>
 
-            {/* Metadata Fields (responsive 1-col on mobile, 2-col on sm+) */}
+            {/* Metadata Fields */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 font-mono text-xs w-full">
               <div className="p-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant/20 flex flex-col gap-1 min-w-0">
-                <span className="text-[10px] text-on-surface-variant">SHA-256 Checksum Signature</span>
+                <span className="text-[10px] text-on-surface-variant font-sans">Checksum / Hash</span>
                 <span className="text-on-surface truncate block font-mono text-[11px]">{selectedFile.checksum}</span>
               </div>
 
               <div className="p-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant/20 flex flex-col gap-1 min-w-0">
-                <span className="text-[10px] text-on-surface-variant">Last File System Update</span>
+                <span className="text-[10px] text-on-surface-variant font-sans">Last Modified</span>
                 <span className="text-on-surface truncate block font-mono text-[11px]">{selectedFile.modified}</span>
               </div>
             </div>
 
-            {/* Forensic Analyst Notes */}
+            {/* Review Notes */}
             <div className="p-3 rounded-lg bg-surface-container-high/60 border border-outline-variant/30 text-xs text-on-surface-variant leading-relaxed break-words">
-              <strong className="text-on-surface">Telemetry Note: </strong>
+              <strong className="text-on-surface font-medium">Review Notes: </strong>
               {selectedFile.notes}
             </div>
 
-            {/* Interactive Operations for this file */}
+            {/* Actions for this file */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 border-t border-surface-container-highest">
               
               {/* Permission Selector */}
               <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2 w-full sm:w-auto min-w-0">
-                <label className="text-xs font-mono text-on-surface-variant whitespace-nowrap">
-                  Sharing Access:
+                <label className="text-xs text-on-surface-variant whitespace-nowrap font-medium">
+                  File Access:
                 </label>
                 <select
                   value={selectedFile.permission}
                   onChange={(e) => handleChangePermission(selectedFile.id, e.target.value as VirtualFile['permission'])}
-                  className="w-full sm:w-auto bg-surface-container-lowest border border-outline-variant rounded-lg px-2.5 py-1.5 text-xs text-on-surface focus:border-primary outline-none font-mono min-w-0"
+                  className="w-full sm:w-auto bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-2.5 py-1.5 text-xs text-on-surface focus:border-primary outline-none min-w-0"
                 >
                   <option value="Restricted View">Restricted View (Partner Link)</option>
                   <option value="Public">Public (Anyone with link)</option>
-                  <option value="Full Edit">Full Edit (Internal Collab)</option>
-                  <option value="Quarantined">Quarantined (Locked/Isolated)</option>
+                  <option value="Full Edit">Full Edit (Internal Collaborators)</option>
+                  <option value="Quarantined">Quarantined (Access Revoked)</option>
                 </select>
               </div>
 
@@ -317,64 +316,64 @@ export const MissionView: React.FC<MissionViewProps> = ({
                 {selectedFile.threatLevel === 'malicious' ? (
                   <button
                     onClick={() => handleToggleQuarantine(selectedFile.id)}
-                    className={`w-full sm:w-auto px-4 py-2 rounded-lg font-mono text-xs font-bold transition-all text-center ${
+                    className={`w-full sm:w-auto px-4 py-2 rounded-lg text-xs font-semibold transition-all text-center ${
                       selectedFile.permission === 'Quarantined'
                         ? 'bg-error text-on-error'
                         : 'bg-error-container text-on-error-container hover:bg-error'
                     }`}
                   >
-                    {selectedFile.permission === 'Quarantined' ? 'Quarantined ✓' : 'Isolate / Quarantine'}
+                    {selectedFile.permission === 'Quarantined' ? 'Quarantined ✓' : 'Quarantine File'}
                   </button>
                 ) : (
                   <button
                     onClick={() => handleToggleHandover(selectedFile.id)}
-                    className={`w-full sm:w-auto px-4 py-2 rounded-lg font-mono text-xs font-bold transition-all text-center ${
+                    className={`w-full sm:w-auto px-4 py-2 rounded-lg text-xs font-semibold transition-all text-center ${
                       selectedFile.isVerifiedHandover
-                        ? 'bg-secondary text-on-secondary shadow-md'
+                        ? 'bg-secondary text-on-secondary shadow-sm'
                         : 'bg-surface-container-high border border-outline-variant hover:border-secondary text-on-surface'
                     }`}
                   >
-                    {selectedFile.isVerifiedHandover ? 'Handover Candidate ✓' : 'Designate for Handover'}
+                    {selectedFile.isVerifiedHandover ? 'Selected for Handover ✓' : 'Select for Handover'}
                   </button>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Audit Execution Bar */}
-          <div className="p-4 sm:p-5 rounded-2xl bg-surface-container-high border border-primary/40 shadow-xl flex flex-col gap-3.5 sm:gap-4 w-full">
+          {/* Audit Verification Card */}
+          <div className="p-5 rounded-2xl bg-surface-container-high border border-outline-variant/40 shadow-sm flex flex-col gap-4 w-full">
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
               <div className="flex flex-col min-w-0">
-                <span className="font-mono text-xs font-bold text-primary truncate">
-                  INTEGRITY VERIFICATION GATEWAY
+                <span className="text-xs font-semibold text-on-surface truncate">
+                  Handover Verification
                 </span>
-                <span className="text-[11px] sm:text-xs text-on-surface-variant">
-                  Ensures zero malware and valid checksums before external client sync.
+                <span className="text-xs text-on-surface-variant">
+                  Verify file safety and permissions before sharing with Afara Health.
                 </span>
               </div>
 
               <button
                 onClick={handleRunAudit}
-                className="w-full sm:w-auto px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-primary text-on-primary font-bold text-xs uppercase tracking-wider shadow-lg hover:bg-primary-container transition-all flex items-center justify-center gap-2 active:scale-95 glow-primary shrink-0"
+                className="w-full sm:w-auto px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl bg-primary text-on-primary font-semibold text-xs uppercase tracking-wider shadow-sm hover:bg-primary-container transition-all flex items-center justify-center gap-2 active:scale-95 shrink-0"
               >
-                <span>Run Integrity Audit</span>
-                <span className="material-symbols-outlined text-[16px]">verified</span>
+                <span>Verify & Complete</span>
+                <span className="material-symbols-outlined text-[16px]">check_circle</span>
               </button>
             </div>
 
-            {/* Audit Report Terminal Output */}
+            {/* Verification Result Output */}
             {auditResult.status !== 'idle' && (
-              <div className={`p-3.5 sm:p-4 rounded-xl font-mono text-xs flex flex-col gap-2 w-full break-words ${
+              <div className={`p-4 rounded-xl text-xs flex flex-col gap-2 w-full break-words ${
                 auditResult.status === 'running'
-                  ? 'bg-surface-container-lowest text-primary'
+                  ? 'bg-surface-container text-on-surface'
                   : auditResult.status === 'success'
-                  ? 'bg-secondary-container/20 border border-secondary text-on-surface'
-                  : 'bg-error-container/20 border border-error text-on-surface'
+                  ? 'bg-surface-container border border-secondary/50 text-on-surface'
+                  : 'bg-surface-container border border-error/50 text-on-surface'
               }`}>
-                <div className="flex items-center gap-2 font-bold">
+                <div className="flex items-center gap-2 font-semibold">
                   <span className="material-symbols-outlined text-[16px] shrink-0">
                     {auditResult.status === 'running'
-                      ? 'sync'
+                      ? 'hourglass_empty'
                       : auditResult.status === 'success'
                       ? 'task_alt'
                       : 'error'}
@@ -383,19 +382,19 @@ export const MissionView: React.FC<MissionViewProps> = ({
                 </div>
 
                 {auditResult.details.map((d, i) => (
-                  <div key={i} className="pl-5 text-[11px] leading-relaxed break-words">
+                  <div key={i} className="pl-5 text-xs text-on-surface-variant leading-relaxed break-words">
                     {d}
                   </div>
                 ))}
 
                 {auditResult.status === 'success' && (
-                  <div className="mt-3 pt-3 border-t border-secondary/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <span className="text-secondary font-bold text-xs">
-                      Badge: "Verified Handover Architect"
+                  <div className="mt-3 pt-3 border-t border-outline-variant/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <span className="text-secondary font-medium text-xs">
+                      Achievement: Handover Verified
                     </span>
                     <button
                       onClick={() => onNavigateToTab('progress')}
-                      className="px-3 py-1.5 rounded bg-secondary text-on-secondary font-bold text-xs hover:bg-secondary-container w-full sm:w-auto text-center"
+                      className="px-3 py-1.5 rounded bg-secondary text-on-secondary font-semibold text-xs hover:bg-secondary-container w-full sm:w-auto text-center"
                     >
                       View in Portfolio →
                     </button>
